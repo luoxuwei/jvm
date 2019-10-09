@@ -1,7 +1,7 @@
 package classpath
 
 import (
-	"github.com/pkg/errors"
+	"errors"
 	"strings"
 )
 

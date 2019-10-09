@@ -57,3 +57,18 @@ func exists(path string) bool {
 	}
 	return true
 }
+
+func (self ClassPath) ReadClass(name string) ([]byte, Entry, error) {
+	className := name + ".class"
+	if data, entry, err := self.bootClassPath.readClass(className); data != nil {
+		return data, entry, err
+	}
+	if data, entry, err := self.extClassPath.readClass(className); data != nil {
+		return data, entry, err
+	}
+	return self.userClassPath.readClass(className)
+}
+
+func (self ClassPath) String() string {
+     return self.userClassPath.String()
+}

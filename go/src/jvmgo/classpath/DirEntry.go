@@ -21,7 +21,7 @@ func (self *DirEntry) readClass(name string) ([]byte, Entry, error)  {
     fileName := filepath.Join(self.absDir, name)
     data, err := ioutil.ReadFile(fileName)
     if err != nil {
-    	return nil, self, err
+    	return nil, nil, err
 	}
     return data, self, nil
 }

@@ -23,6 +23,9 @@ type ClassFile struct {
 	magic          uint32
 	MinorVersion   uint16
 	MajorVersion   uint16
+	accessFlags    uint16
+	thisClass      uint16
+	superClass     uint16
 }
 
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
@@ -44,4 +47,8 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 		}
 	}
 	panic("java.lang.UnsupportedClassVersionError!")
+}
+
+func (self *ClassFile) AccessFlags() uint16 {
+    return self.accessFlags
 }

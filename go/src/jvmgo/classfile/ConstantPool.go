@@ -26,3 +26,13 @@ func (self *ConstantPool) getUtf8(i uint16) string {
     utf8Info := (*self)[i].(*ConstantUtf8Info)
     return utf8Info.val
 }
+
+func (self *ConstantPool) getNameAndType(i uint16) (string, string)  {
+    info := (*self)[i].(*ConstantNameAndTypeInfo)
+    return self.getUtf8(info.nameIndex), self.getUtf8(info.descriptorIndex)
+}
+
+func (self *ConstantPool) getClassName(i uint16) string {
+    info := (*self)[i].(*ConstantClassInfo)
+    return self.getUtf8(info.nameIndex)
+}

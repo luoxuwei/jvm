@@ -1,4 +1,7 @@
 package classfile
+
+import "fmt"
+
 /*
 ClassFile {
     u4             magic;
@@ -23,9 +26,11 @@ type ClassFile struct {
 	magic          uint32
 	MinorVersion   uint16
 	MajorVersion   uint16
+	constantPool   ConstantPool
 	accessFlags    uint16
 	thisClass      uint16
 	superClass     uint16
+	interfaces     []uint16
 }
 
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
@@ -47,6 +52,33 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 		}
 	}
 	panic("java.lang.UnsupportedClassVersionError!")
+}
+
+func Parse(bytes []byte) (cf *ClassFile, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			var ok bool
+			err, ok = r.(error)
+			if !ok {
+				err = fmt.Errorf("%v", r)
+			}
+		}
+	}()
+
+	cr := &ClassReader{data:bytes}
+    cf = &ClassFile{}
+    cf.read(cr)
+    return
+}
+
+func (self *ClassFile) read(reader *ClassReader) {
+	self.readAndCheckMagic(reader)
+	self.readAndCheckVersion(reader)
+    self.constantPool = readConstantPool(reader)
+    self.accessFlags = reader.readUint16()
+    self.thisClass = reader.readUint16()
+    self.superClass = reader.readUint16()
+    self.interfaces = reader.readUint16s()
 }
 
 func (self *ClassFile) AccessFlags() uint16 {

@@ -11,8 +11,13 @@ SourceFile_attribute {
 
 type SourceFileAttribute struct {
 	sourceFileIndex uint16
+	cp ConstantPool
 }
 
 func (self *SourceFileAttribute) readInfo(reader *ClassReader) {
 	self.sourceFileIndex = reader.readUint16()
+}
+
+func (self *SourceFileAttribute) FileName() string {
+    return self.cp.getUtf8(self.sourceFileIndex)
 }

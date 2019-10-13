@@ -9,7 +9,7 @@ Deprecated_attribute {
     u4 attribute_length;
 }
 */
-type DeprecatedAttribut struct {
+type DeprecatedAttribute struct {
 	MarkerAttribute
 }
 /*

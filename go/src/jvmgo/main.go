@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"jvmgo/classfile"
+)
 import "strings"
 import "jvmgo/classpath"
 
@@ -23,6 +26,7 @@ func startJVM(cmd *Cmd) {
     data, _, _ := cp.ReadClass(className)
     if data != nil {
     	fmt.Printf("class data:%v\n", data)
+    	cf, err := classfile.Parse(data)
 	} else {
 		fmt.Printf("Could not find or load main class %s\n", cmd.class)
 	}

@@ -25,7 +25,7 @@ type ExceptionTableEntry struct {
 }
 
 type CodeAttribute struct {
-	cp         ConstantPool
+	cp         *ConstantPool
 	maxStack   uint16
 	maxLocals  uint16
 	code       []byte

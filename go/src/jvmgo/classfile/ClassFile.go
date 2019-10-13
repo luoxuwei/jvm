@@ -31,6 +31,9 @@ type ClassFile struct {
 	thisClass      uint16
 	superClass     uint16
 	interfaces     []uint16
+	FieldInfos      []MemberInfo
+	MethodInfos     []MemberInfo
+	AttributeInfos  []AttributeInfo
 }
 
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
@@ -79,6 +82,9 @@ func (self *ClassFile) read(reader *ClassReader) {
     self.thisClass = reader.readUint16()
     self.superClass = reader.readUint16()
     self.interfaces = reader.readUint16s()
+    self.FieldInfos = readMembers(reader, &self.constantPool)
+    self.MethodInfos = readMembers(reader, &self.constantPool)
+    self.AttributeInfos = readAttributes(reader, &self.constantPool)
 }
 
 func (self *ClassFile) AccessFlags() uint16 {

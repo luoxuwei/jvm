@@ -40,7 +40,7 @@ type AttributeInfo interface {
 	readInfo(reader *ClassReader)
 }
 
-func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
+func readAttributes(reader *ClassReader, cp *ConstantPool) []AttributeInfo {
 	count := reader.readUint16()
 	attributes := make([]AttributeInfo, count)
 	for i := range attributes {
@@ -49,7 +49,7 @@ func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
 	return attributes
 }
 
-func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
+func readAttribute(reader *ClassReader, cp *ConstantPool) AttributeInfo {
 	nameIndex := reader.readUint16()
 	name := cp.getUtf8(nameIndex)
 	l := reader.readUint32()
@@ -58,10 +58,20 @@ func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
 	return info
 }
 
-func newAttributeInfo(name string, l uint32, cp ConstantPool) AttributeInfo {
+func newAttributeInfo(name string, l uint32, cp *ConstantPool) AttributeInfo {
 	switch name {
 	case Code:
 		return &CodeAttribute{cp:cp}
+	case ConstantValue:
+		return &ConstantValueAttribute{}
+	case Deprecated:
+		return &DeprecatedAttribute{}
+	case Synthetic:
+		return &SyntheticAttribute{}
+	case LineNumberTable:
+		return &LineNumberTableAttribute{}
+	case Exceptions:
+		return &ExceptionAttribute{}
 	default:
 		return &UnparseAttribute{
 			name:name,

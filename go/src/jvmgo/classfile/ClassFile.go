@@ -26,7 +26,7 @@ type ClassFile struct {
 	magic          uint32
 	MinorVersion   uint16
 	MajorVersion   uint16
-	constantPool   ConstantPool
+	ConstantPool   ConstantPool
 	accessFlags    uint16
 	thisClass      uint16
 	superClass     uint16
@@ -77,16 +77,32 @@ func Parse(bytes []byte) (cf *ClassFile, err error) {
 func (self *ClassFile) read(reader *ClassReader) {
 	self.readAndCheckMagic(reader)
 	self.readAndCheckVersion(reader)
-    self.constantPool = readConstantPool(reader)
+    self.ConstantPool = readConstantPool(reader)
     self.accessFlags = reader.readUint16()
     self.thisClass = reader.readUint16()
     self.superClass = reader.readUint16()
     self.interfaces = reader.readUint16s()
-    self.FieldInfos = readMembers(reader, &self.constantPool)
-    self.MethodInfos = readMembers(reader, &self.constantPool)
-    self.AttributeInfos = readAttributes(reader, &self.constantPool)
+    self.FieldInfos = readMembers(reader, &self.ConstantPool)
+    self.MethodInfos = readMembers(reader, &self.ConstantPool)
+    self.AttributeInfos = readAttributes(reader, &self.ConstantPool)
 }
 
 func (self *ClassFile) AccessFlags() uint16 {
     return self.accessFlags
+}
+
+func (self *ClassFile) ClassName() string {
+	return self.ConstantPool.getClassName(self.thisClass)
+}
+
+func (self *ClassFile) SuperClassName() string {
+	return self.ConstantPool.getClassName(self.superClass)
+}
+
+func (self *ClassFile) InterfaceNames() interface{} {
+	interfaceNames := make([]string, len(self.interfaces))
+	for i, cpIndex := range self.interfaces {
+		interfaceNames[i] = self.ConstantPool.getClassName(cpIndex)
+	}
+	return interfaceNames
 }

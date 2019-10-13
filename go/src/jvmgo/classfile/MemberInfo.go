@@ -36,3 +36,7 @@ func readMembers(reader *ClassReader, cp *ConstantPool) []MemberInfo {
 	return infos
 }
 
+func (self *MemberInfo) Name(cp *ConstantPool) string {
+	return cp.getUtf8(self.NameIndex)
+}
+

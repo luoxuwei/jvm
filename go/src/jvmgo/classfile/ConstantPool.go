@@ -1,7 +1,7 @@
 package classfile
 
 type ConstantPool []ConstantInfo
-
+// http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.5
 func readConstantPool(reader *ClassReader) ConstantPool {
     n := int(reader.readUint16())
     constantInfos := make([]ConstantInfo, n)

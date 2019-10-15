@@ -45,7 +45,7 @@ func (self *LocalVars) SetDouble(index uint, val float64) {
     self.SetLong(index, int64(bits))
 }
 
-func (self *LocalVars) getDouble(index uint) float64 {
+func (self *LocalVars) GetDouble(index uint) float64 {
 	bits := uint64(self.GetLong(index))
 	return math.Float64frombits(bits)
 }

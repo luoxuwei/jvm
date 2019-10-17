@@ -20,7 +20,7 @@ func main()  {
 	}
 }
 
-func testFrame()  {
+func testFrame() {
 	frame := rtda.NewFrame(100, 100)
     testLocalVars(frame.LocalVars())
 	testOperandStack(frame.OperandStack())

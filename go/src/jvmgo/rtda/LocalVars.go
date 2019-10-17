@@ -20,8 +20,8 @@ func (self *LocalVars) GetInt(index uint) int32 {
 }
 
 func (self *LocalVars) SetFloat(index uint, val float32) {
-	bits := int32(val)
-	(*self)[index].Val = bits
+	bits := math.Float32bits(val)
+	(*self)[index].Val = int32(bits)
 }
 
 func (self *LocalVars) GetFloat(index uint) float32 {

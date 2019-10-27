@@ -28,3 +28,11 @@ type Index8Instruction struct {
 func (self *Index8Instruction) FetchOperands(reader *ByteCodeReader)  {
     self.Index = uint(reader.ReadInt8())
 }
+
+type Index16Instruction struct {
+	Index uint
+}
+
+func (self *Index16Instruction) FetchOperands(reader *ByteCodeReader)  {
+	self.Index = uint(reader.ReadUint16())
+}

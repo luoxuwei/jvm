@@ -20,3 +20,11 @@ type BranchInstruction struct {
 func (self *BranchInstruction) FetchOperands(reader *ByteCodeReader) {
 	self.Offset = int(reader.ReadInt16())
 }
+
+type Index8Instruction struct {
+	Index uint
+}
+
+func (self *Index8Instruction) FetchOperands(reader *ByteCodeReader)  {
+    self.Index = uint(reader.ReadInt8())
+}
